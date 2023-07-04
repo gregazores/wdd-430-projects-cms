@@ -8,7 +8,7 @@ import { MessageService } from '../message.service';
   styleUrls: ['./message-edit.component.css']
 })
 export class MessageEditComponent implements OnInit {
-  currentSender: string = "19";
+  currentSender: string = "101";
   //subjectRef and msgTextRef are local variables of type ElementRef
   //@ViewChild allows you to access the element referenced inside @ViewChil's argument here on the HTML template
   //good thing with @ViewChild the type is ElementRef which gives you access to nativeElement

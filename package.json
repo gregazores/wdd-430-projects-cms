@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "startsrv": "node server.js",
+    "watchnm": "nodemon server.js"
   },
   "private": true,
   "dependencies": {
@@ -18,7 +20,13 @@
     "@angular/platform-browser": "^15.2.0",
     "@angular/platform-browser-dynamic": "^15.2.0",
     "@angular/router": "^15.2.0",
+    "body-parser": "^1.20.2",
     "bootstrap": "^3.4.1",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "mongoose": "^7.3.1",
+    "mongoose-unique-validator": "^4.0.0",
+    "morgan": "^1.10.0",
     "ng2-dnd": "^5.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -35,6 +43,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "nodemon": "^2.0.22",
     "typescript": "~4.9.4"
   }
 }

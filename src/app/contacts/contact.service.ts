@@ -24,7 +24,10 @@ export class ContactService {
   //see documents
   maxContactId: number;
   //this is the API endpoint that we should use so that we can connect to firebase
-  contactUrl: string = 'https://wdd-430-project-data-default-rtdb.asia-southeast1.firebasedatabase.app/contacts.json';
+  // contactUrl: string = 'https://wdd-430-project-data-default-rtdb.asia-southeast1.firebasedatabase.app/contacts.json';
+
+   //this is the API endpoint that we should use so that we can connect to my rest api
+   contactUrl: string = 'http://localhost:3000/contacts';
 
   //creating a class variable named contacts whose data type is an array of contact objects.
   //Initialize the variable with an empty array ([])
@@ -87,6 +90,7 @@ export class ContactService {
     // RETURN null
 
     //simple solution using the javascript method find
+    //console.log("I was called getContact from contact service", this.contacts)
     return this.contacts.find((contact) => contact.id === id);
   }
 
@@ -96,18 +100,32 @@ export class ContactService {
       return;
     }
 
-    const pos = this.contacts.indexOf(contact);
+    // //these code below is for firebase to work
+    // const pos = this.contacts.indexOf(contact);
+    // if (pos < 0) {
+    //   return;
+    // }
+    // this.contacts.splice(pos, 1);
+    // //this.contactChangedEvent.emit(this.contacts.slice());
+    // //see document for explanation
+
+    // //this.contactListChangedEvent.next(this.contacts.slice());
+    // //see documents counterpart for explanation
+    // this.storeContacts(this.contacts.slice())
+
+    //these code below is for my rest api to work
+    const pos = this.contacts.findIndex(d => d.id === contact.id);
     if (pos < 0) {
       return;
     }
+    // delete from database
+    this.http.delete(this.contactUrl + "/" + contact.id).subscribe(
+    (response) => {
+      this.contacts.splice(pos, 1);
+      this.contactListChangedEvent.next(this.contacts.slice())
+    }
+  );
 
-    this.contacts.splice(pos, 1);
-    //this.contactChangedEvent.emit(this.contacts.slice());
-    //see document for explanation
-
-    //this.contactListChangedEvent.next(this.contacts.slice());
-    //see documents counterpart for explanation
-    this.storeContacts(this.contacts.slice())
   }
 
   getMaxId(): number {
@@ -137,17 +155,32 @@ export class ContactService {
       return;
     }
 
-    //this.maContactId++
-    this.maxContactId++;
-    //newContact.id = this.maxContactId
-    newContact.id = String(this.maxContactId);
-    //push newContact onto the contacts list
-    this.contacts.push(newContact);
-    //contactsListClone = contacts.slice()
-    //const contactListClone = this.contacts.slice()
-    //this.contactListChangedEvent.next(this.contacts.slice());
-    //see documents counterpart for explanation
-    this.storeContacts(this.contacts.slice())
+    // //method below is for firebase data
+    // //this.maContactId++
+    // this.maxContactId++;
+    // //newContact.id = this.maxContactId
+    // newContact.id = String(this.maxContactId);
+    // //push newContact onto the contacts list
+    // this.contacts.push(newContact);
+    // //contactsListClone = contacts.slice()
+    // //const contactListClone = this.contacts.slice()
+    // //this.contactListChangedEvent.next(this.contacts.slice());
+    // //see documents counterpart for explanation
+    // this.storeContacts(this.contacts.slice())
+
+    //method below is for the new rest API
+    // make sure id of the new Document is empty
+    newContact.id = '';
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    // add to database
+    this.http.post<{ message: string, contact: Contact }>(this.contactUrl,
+    newContact,  { headers: headers }).subscribe(
+      (responseData) => {
+          // add new contact to contacts
+          this.contacts.push(responseData.contact);
+          this.contactListChangedEvent.next(this.contacts.slice())
+      }
+    );
   }
 
   updateContact(originalContact: Contact, newContact: Contact) {
@@ -155,17 +188,39 @@ export class ContactService {
       return;
     }
 
-    let pos = this.contacts.indexOf(originalContact);
+    // //these code below is intended to work with firebase
+    // let pos = this.contacts.indexOf(originalContact);
+    // if (pos < 0) {
+    //   return;
+    // }
+    // newContact.id = originalContact.id;
+    // this.contacts[pos] = newContact;
+    // //const contactListClone = this.contact.slice()
+    // //this.contactListChangedEvent.next(this.contacts.slice());
+    // //see documents counterpart for explanation
+    // this.storeContacts(this.contacts.slice())
+
+    //these data below is inteded to work with my rest api
+    const pos = this.contacts.findIndex(d => d.id === originalContact.id);
+
     if (pos < 0) {
       return;
     }
 
+    // set the id of the new Document to the id of the old Document
     newContact.id = originalContact.id;
-    this.contacts[pos] = newContact;
-    //const contactListClone = this.contact.slice()
-    //this.contactListChangedEvent.next(this.contacts.slice());
-    //see documents counterpart for explanation
-    this.storeContacts(this.contacts.slice())
+
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    // update database
+    // <{ message: string, contact: Contact }> indicates that the http put request is going to return message and document
+    this.http.put<{ message: string, contact: Contact }>(this.contactUrl + "/" + originalContact.id,
+    newContact, { headers: headers }).subscribe(
+      (responseData) => {
+        this.contacts[pos] = responseData.contact
+        this.contactListChangedEvent.next(this.contacts.slice())
+      }
+    )
+
   }
 
   storeContacts(contactsToStore: Contact[])  {

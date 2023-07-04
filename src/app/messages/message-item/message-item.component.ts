@@ -15,12 +15,16 @@ export class MessageItemComponent implements OnInit{
   messageSender: String;
 
   //injecting ContactService here
-  constructor( private contactService: ContactService ) { }
+  constructor( private contactService: ContactService ) {
+    this.contactService.getContacts();
+  }
 
   ngOnInit() {
     //since we no have access to the ContactService we can use the getContact method passing in the id
     // where is this.message.sender referencing to? it is from @Input() message: Message;
     const contact: Contact = this.contactService.getContact(this.message.sender);
+    //console.log("contact from item", contact)
+    //console.log("this.message from item", this.message)
     this.messageSender = contact.name;
   }
 }

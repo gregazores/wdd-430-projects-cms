@@ -90,17 +90,33 @@ export class DocumentService {
     if (!document) {
        return;
     }
-    const pos = this.documents.indexOf(document);
-    if (pos < 0) {
-       return;
+
+  //   //these code below is for firebase to work
+  //   const pos = this.documents.indexOf(document);
+  //   if (pos < 0) {
+  //      return;
+  //   }
+  //   this.documents.splice(pos, 1);
+  //   //we will need to change this to function with the newly created Subject observable
+  //   //this.documentChangedEvent.emit(this.documents.slice());
+  //  //since we are manipulating data from firebase, we will move this event emitter
+  //  //to a new method called storeDocuments
+  //  //this.documentListChangedEvent.next(this.documents.slice())
+  //  this.storeDocuments(this.documents.slice())
+
+  //these code below is for my rest api to work
+  const pos = this.documents.findIndex(d => d.id === document.id);
+
+  if (pos < 0) {
+    return;
+  }
+  // delete from database
+  this.http.delete(this.documentUrl + "/" + document.id).subscribe(
+    (response) => {
+      this.documents.splice(pos, 1);
+      this.documentListChangedEvent.next(this.documents.slice())
     }
-    this.documents.splice(pos, 1);
-    //we will need to change this to function with the newly created Subject observable
-    //this.documentChangedEvent.emit(this.documents.slice());
-   //since we are manipulating data from firebase, we will move this event emitter
-   //to a new method called storeDocuments
-   //this.documentListChangedEvent.next(this.documents.slice())
-   this.storeDocuments(this.documents.slice())
+  );
  }
 
   //getMaxId(): Number with this config function is expected to return a value of type Number
@@ -158,8 +174,7 @@ export class DocumentService {
     (responseData) => {
       // add new document to documents
       this.documents.push(responseData.document);
-      console.log('this.documents', this.documents)
-      console.log('responseData.document', responseData.document)
+      this.documentListChangedEvent.next(this.documents.slice())
       //this.sortAndSend();
     }
   );
@@ -171,18 +186,42 @@ export class DocumentService {
       return
    }
 
-   let pos = this.documents.indexOf(originalDocument)
-   if(pos < 0) {
-      return
-   }
+  // //these code below is intended to work with firebase
+  //  let pos = this.documents.indexOf(originalDocument)
+  //  if(pos < 0) {
+  //     return
+  //  }
+  //  newDocument.id = originalDocument.id;
+  //  this.documents[pos] = newDocument;
+  //  //const documentsListClone = this.documents.slice()
+  //  //since we are manipulating data from firebase, we will move this event emitter
+  //  //to a new method called storeDocuments
+  //  //this.documentListChangedEvent.next(this.documents.slice())
+  //  this.storeDocuments(this.documents.slice())
 
-   newDocument.id = originalDocument.id;
-   this.documents[pos] = newDocument;
-   //const documentsListClone = this.documents.slice()
-   //since we are manipulating data from firebase, we will move this event emitter
-   //to a new method called storeDocuments
-   //this.documentListChangedEvent.next(this.documents.slice())
-   this.storeDocuments(this.documents.slice())
+  //these data below is inteded to work with my rest api
+  const pos = this.documents.findIndex(d => d.id === originalDocument.id);
+
+  if (pos < 0) {
+    return;
+  }
+
+  // set the id of the new Document to the id of the old Document
+  newDocument.id = originalDocument.id;
+  //newDocument._id = originalDocument._id;
+
+  const headers = new HttpHeaders({'Content-Type': 'application/json'});
+  // update database
+  // <{ message: string, document: Document }> indicates that the http put request is going to return message and document
+  this.http.put<{ message: string, document: Document }>(this.documentUrl + "/" + originalDocument.id,
+  newDocument, { headers: headers }).subscribe(
+    (responseData) => {
+      //console.log('responseData from put request', responseData.document)
+      this.documents[pos] = responseData.document
+      this.documentListChangedEvent.next(this.documents.slice())
+
+    }
+  )
 
  }
 

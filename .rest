@@ -1,0 +1,77 @@
+###  LOCALHOST
+
+### GET DATA
+
+GET http://localhost:3000/documents
+
+###
+
+GET http://localhost:3000/contacts
+
+###
+
+GET http://localhost:3000/messages
+
+###  INSERT DATA
+POST http://localhost:3000/documents HTTP/1.1
+content-type: application/json
+
+{
+"name": "This is a test Document111", "url": "https://www.byui.edu/computer-information-technology/courses", "description": "This is a test description for a document"
+}
+
+###
+POST http://localhost:3000/contacts HTTP/1.1
+content-type: application/json
+
+{
+"name": "Test Contact", "email": "testcontact@test.com", "phone": "223-223-2233", "imageUrl": "../../assets/images/fredFlintstone.png"
+}
+
+###
+POST http://localhost:3000/messages HTTP/1.1
+content-type: application/json
+
+{
+"subject": "This is another test message", "msgText": "This is another test message from Greg Azores", "sender": "64a2154792c83b46615c4570"
+}
+
+###  UPDATE DATA
+PUT http://localhost:3000/documents/107 HTTP/1.1
+content-type: application/json
+
+{
+"name": "This is a test document111", "description": "This is a test document description just to test everything", "url": "https://www.byui.edu/computer-information-technology/courses", "children": null
+}
+
+###
+
+PUT http://localhost:3000/contacts/102 HTTP/1.1
+content-type: application/json
+
+{
+"name": "Test Contact11123", "email": "testcontact123@test.com", "phone": "223-223-1111", "imageUrl": "../../assets/images/fredFlintstone.png", "children": null
+}
+
+###
+
+PUT http://localhost:3000/messages/101 HTTP/1.1
+content-type: application/json
+
+{
+"subject": "This is a test message from Greg Azores111", "msgText": "111This is a test message from Greg Azores and I wanted to test this message.", "sender": "64a2154792c83b46615c4570"
+}
+
+###  DELETE DATA
+DELETE http://localhost:3000/documents/102 HTTP/1.1
+content-type: application/json
+
+###
+DELETE http://localhost:3000/contacts/103 HTTP/1.1
+content-type: application/json
+
+###
+DELETE http://localhost:3000/messages/102 HTTP/1.1
+content-type: application/json
+
+
