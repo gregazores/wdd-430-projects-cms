@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-5">
+    <!-- notice below it is event binding -->
+    <!-- selectedContact is a local varible in this contact component -->
+    <!-- we are binding the output of selectedContactEvent from ContactListComponent to local variable selectedContact see the ContactsComponent class -->
+    <!-- from the book: bind the selectedContactEvent output from the ContactListComponent to a statement that will assign the data passed with the event to a local variable. -->
+    <!-- when using service, we will no longer need to listen to selectedContactEvent from ContactListComponent class -->
+    <!-- we will subscribe to contactSelectedEvent from ContactService class instead -->
+    <!-- $event will be the data emitted with that event
+      <cms-contact-list (selectedContactEvent)="selectedContact = $event"></cms-contact-list> -->
+    <cms-contact-list></cms-contact-list>
+    <!-- this is line (selectedContactEvent)="executeThisMethod($event)" where you will create the method -->
+  </div>
+  <div class="col-md-7">
+    <!-- notice on this one it is property binding -->
+    <!-- this is so that we can assign the value of selectedContact from ContactsComponent class to the 'contact' property of ContactDetailComponent class -->
+    <!-- <cms-contact-detail [contact]="selectedContact" *ngIf="selectedContact"></cms-contact-detail> see document component for explaination -->
+    <!-- ngIf directive loads the component only when the value of the selectedContact variable is not null or undefined. -->
+
+    <router-outlet></router-outlet>
+  </div>
+</div>

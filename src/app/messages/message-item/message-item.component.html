@@ -1,0 +1,11 @@
+<a class="list-group-item clearfix">
+  <div class=''>
+    <!-- since we have alredy modified MessageItemComponent class to access contacts and get the name of the contact
+    using the id, we will modify this span  -->
+    <!-- <span class='messageHeader'>{{ message?.sender }}</span> -->
+
+    <span *ngIf="messageSender" class='messageHeader'>{{ messageSender }}</span>
+    <div class='messageText'>{{ message?.msgText }}</div>
+  </div>
+</a>
+

@@ -1,0 +1,138 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <!-- see documents for explanation -->
+    <form id="contact-edit" (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control required"
+            size="120"
+            max="120"
+            name="name"
+            [ngModel]="contact?.name"
+            required
+            #name="ngModel">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="email">Email:</label>
+          <input
+            type="text"
+            id="email"
+            class="form-control required"
+            size="120"
+            max="255"
+            name="email"
+            [ngModel]="contact?.email"
+            required
+            email
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+            #email="ngModel">
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- display error message if email is invalid
+        -->
+        <div class="col-sm-12">
+          <div class="danger alert-danger alert-message" *ngIf="!email.valid && email.touched">Enter a valid Email address</div></div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="phone">Phone:</label>
+          <input
+            type="tel"
+            id="phone"
+            class="form-control invalid"
+            size="150"
+            max="255"
+            name="phone"
+            [ngModel]="contact?.phone"
+            pattern="\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*"
+            #phone="ngModel">
+
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- display error message if phone is invalid
+        -->
+        <div class="col-sm-12">
+          <div class="danger alert-danger alert-message" *ngIf="!phone.valid && phone.touched">Enter a valid Phone Number</div></div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="imageUrl">Image URL:</label>
+          <input
+            type="text"
+            id="imageUrl"
+            class="form-control"
+            size="150"
+            max="255"
+            name="imageUrl"
+            [ngModel]="contact?.imageUrl"
+            #imageUrl="ngModel">
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- ngIf directive to load and display the <div> only when either the Document Title OR
+          Document URL fields do not have a valid value.
+        -->
+        <div class="col-sm-12">
+          <div class="danger alert-danger alert-message" *ngIf="!name.valid && name.touched || !email.valid && email.touched">The Name and Email fields are required.
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="groupList">Group Contacts:</label>
+
+            <div class="danger alert-danger alert-message" *ngIf="invalidContactAdded">Contact cannot be added to the group. It is already in a groupor it is the current contact.
+            </div>
+
+            <!-- define the drop zone
+              Add the dnd-droppable directive to indicate that this element will receive draggable items
+              Add the [dropZones] directive and assign a name.
+              The [dropZones] directive requires that you assign an array of names to it. We only defined the contactGroup name in the array.
+              Add the (onDropSuccess) directive to specify the method that will be called when a contact is dragged into this drop zone.
+             -->
+            <div class="row" id="groupList"
+                style="min-height: 5rem;"
+                dnd-droppable [dropZones]="['contactGroup']" (onDropSuccess)="addToGroup($event)">
+
+              <div *ngFor="let contact of groupContacts; let i = index">
+                <div>
+                  <cms-contact-item class="col-sm-11 contact-item" [contact]="contact"></cms-contact-item>
+                  <button class="btn btn-danger col-sm-2 deleteButton" (click)="onRemoveItem(i)">X</button>
+                </div>
+              </div>
+              <span class="dragMsg" *ngIf="groupContacts?.length < 1">Drag contacts in group here</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-xs-12 btn-toolbar">
+          <button [disabled]="!f.valid" class="btn btn-success" type="submit">Save</button>
+          <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+

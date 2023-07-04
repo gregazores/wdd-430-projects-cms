@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-md-5">
+    <!-- listen for the onSelectedDocument method from cms-document-list that will be triggered by the click event -->
+    <!-- once onSelectedDocument is called assign $event to selectedDocument which is a local variable in DocumentsComponent class -->
+    <!-- we will no longer be listening for an event here. We will do that in the DocumentsComponent class instead via ngOnInit -->
+    <!-- <cms-document-list (selectedDocumentEvent)="selectedDocument = $event"></cms-document-list> -->
+    <cms-document-list></cms-document-list>
+  </div>
+
+  <div class="col-md-4">
+    <!-- passing the value of selectedDocument from the  DocumentsComponent class to the document property of DocumentDetailComponent class -->
+    <!-- display this html element only if there is selectedDocument -->
+    <!-- <cms-document-detail [document]="selectedDocument" *ngIf="selectedDocument"></cms-document-detail> -->
+    <!-- with routing we will no longer need the *ngIf to display the document detail we will use angular routing instead -->
+
+    <!-- Add a <router-outlet> tag to the DocumentsComponent to specify the
+      location where the child components are to be loaded into the DOM and displayed -->
+    <router-outlet></router-outlet>
+  </div>
+</div>

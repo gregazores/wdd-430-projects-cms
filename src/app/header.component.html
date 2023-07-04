@@ -1,0 +1,40 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="#" class="navbar-brand">WeLearnCMS</a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+
+        <!-- The [routerLink] directive specifies a URL path that is to be selected
+          in the routing table specified in the app-routing.module.ts file. Notice "href" is replaced -->
+        <!-- Add a routerLinkActive directive to each of the <li> (list item) tags to display the current link that is active.
+          when a certain li is active an active class will be added -->
+        <li routerLinkActive="active"><a [routerLink]="['/documents']" >Documents</a></li>
+        <li routerLinkActive="active"><a [routerLink]="['/messages']" >Messages</a></li>
+        <li routerLinkActive="active"><a [routerLink]="['/contacts']" >Contacts</a></li>
+
+        <!-- can also be done this way
+        <li routerLinkActive="active"><a routerLink="/documents" >Documents</a></li>
+        <li routerLinkActive="active"><a routerLink="/messages" >Messages</a></li>
+        <li routerLinkActive="active"><a routerLink="/contacts" >Contacts</a></li> -->
+
+        <!-- we will no longer implement this navigation since we will be using angular's routing instead -->
+        <!-- <li><a href="#" (click)="onSelected('documents')">Documents</a></li>
+        <li><a href="#" (click)="onSelected('messages')">Messages</a></li>
+        <li><a href="#" (click)="onSelected('contacts')">Contacts</a></li> -->
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" cmsDropdown>
+          <a class="dropdown-toggle" role="button">User <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Save Data</a></li>
+            <li><a href="#">Fetch Data</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+

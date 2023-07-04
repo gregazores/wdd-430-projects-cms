@@ -1,0 +1,77 @@
+<div class="row details">
+  <div class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="clearfix panel-heading">
+        <h2>{{ contact?.name }}</h2>
+        <div class="pull-left">
+          <img class="img-responsive" alt="{{ contact?.name }}" [src]="contact?.imageUrl" alt="{{ contact?.name }}" *ngIf="contact?.imageUrl">
+        </div>
+
+        <div class="pull-right btn-toolbar">
+          <a [routerLink]="['edit']" class="btn btn-primary">Edit</a>
+          <a (click)="onDelete()" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+
+      <div class="panel-body" *ngIf="contact.email != ' ' && contact?.phone != ' '">
+        <div class="list-group-item-heading" *ngIf="contact.email != ' '">
+          <p><strong>Email:</strong> {{ contact?.email }}</p>
+        </div>
+
+        <div class="list-group-item-heading" *ngIf="contact?.phone != ' '">
+          <p><strong>Phone:</strong>{{ contact?.phone }}</p>
+        </div>
+      </div>
+
+      <div *ngIf="contact?.group" class="clearfix panel-heading">
+        <h2>Group Contacts:</h2>
+        <div class="row" id="groupList" style="min-height: 3rem;" >
+
+          <div *ngFor="let contact of groupContacts; let i = index">
+            <div>
+              <cms-contact-item class="col-sm-11 contact-item" [contact]="contact"></cms-contact-item>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- old code I want to keep
+
+<div class="row details">
+  <div class="panel panel-default">
+    <div class="col-xs-12 panel-heading">
+      <div class="col-xs-6">
+        <h2 class="heading">{{ contact?.name }}</h2>
+        <img class="img-responsive" alt="Rex Barzee" [src]="contact?.imageUrl" alt="{{ contact?.name }}">
+      </div>
+
+      <div class="col-xs-6 buttons">
+        <button class="btn btn-primary">Edit</button>
+        <button class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-12 margin-top">
+          <p><strong>Email:</strong></p>
+          <p><strong>Phone:</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+-->
+

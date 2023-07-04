@@ -1,0 +1,29 @@
+.details {
+  margin-left: 30px;
+}
+
+.details .panel-heading h2 {
+  margin: 0 0 12px 0;
+}
+
+.details .panel-heading .col-xs-6.buttons {
+  margin-top: 60px;
+  text-align: right
+}
+
+.details .panel-body .margin-top {
+  margin-top: 20px;
+}
+
+.pad-left-right{
+  padding-left:.1rem;
+}
+
+.groupDiv {
+  min-height: 6rem;
+  border: solid thin lightgrey;
+}
+
+.contact-item {
+  margin-bottom: 15px;
+}

@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <span class="title pad-left-right">Contacts</span>
+      </div>
+      <div class="row">
+        <div class="input-group pull-left pad-left-right col-xs-7">
+          <label for="searchBox">Image URL:</label>
+          <input
+            type="text"
+            id="searchBox"
+            class="form-control"
+            size="150"
+            max="255"
+            placeholder="Enter a search value"
+            (keyup)="search(searchBox.value)"
+            name="searchBox"
+            #searchBox>
+            <!-- <div class="glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div> -->
+        </div>
+        <div class="pull-right pad-left-right">
+          <a class="btn btn-success" [routerLink]="['new']">New Contact</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-12 margin-top">
+          <!-- transferred this part to contact item component
+          <a href="#" class="list-group-item clearfix" *ngFor="let contact of contacts">
+            <div class="pull-left">
+              <h4 class="list-group-item-heading">{{ contact?.name }}</h4>
+            </div>
+            <span class="pull-right">
+              <img [src]="contact?.imageUrl" alt="{{ contact?.name }}" class="img-responsive" *ngIf="contact?.imageUrl" width="50">
+            </span>
+          </a> -->
+
+          <!-- The ContactListComponent must pass the current Contact object to the ContactItemComponent as it loops through all of the contacts in the list via parent component -->
+          <!-- see documents list component for explanation
+            <cms-contact-item
+            *ngFor="let contactEl of contacts"
+            [contact]="contactEl"
+            (click)="onSelected(contactEl)">
+          </cms-contact-item> -->
+
+
+          <!-- All of the <cms-contact-item> elements in the ContactListComponent need to be identified as draggable.
+            Add the dnd-draggable directive to indicate that this element is draggable
+            Add the [dragEnabled] directive to indicate when the element is draggable. The element is draggable when the value of this directive is true. It is not draggable when its value is false.
+
+            Add the [dragData] directive to indicate what data is to be associated with the element when it is dragged. assign the value of the contact property in the ContactItemComponent to the [dragData] directive
+          -->
+          <cms-contact-item
+            *ngFor="let contactEl of contacts | contactsFilter:term"
+            [contact]="contactEl"
+            dnd-draggable
+            [dragEnabled]="!contactEl.group"
+            [dragData]="contactEl"
+            [dropZones]="['contactGroup']"
+            >
+            <!-- [contact] above refers to the contact property of ContactItemComponent coded like this: @Input() contact: Contact; -->
+          </cms-contact-item>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
