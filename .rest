@@ -55,7 +55,7 @@ content-type: application/json
 
 ###
 
-PUT http://localhost:3000/messages/101 HTTP/1.1
+PUT http://localhost:3000/messages/105 HTTP/1.1
 content-type: application/json
 
 {
@@ -67,11 +67,11 @@ DELETE http://localhost:3000/documents/102 HTTP/1.1
 content-type: application/json
 
 ###
-DELETE http://localhost:3000/contacts/103 HTTP/1.1
+DELETE http://localhost:3000/contacts/105 HTTP/1.1
 content-type: application/json
 
 ###
-DELETE http://localhost:3000/messages/102 HTTP/1.1
+DELETE http://localhost:3000/messages/105 HTTP/1.1
 content-type: application/json
 
 
